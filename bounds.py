@@ -13,6 +13,7 @@ out - list"""
         bounds.append(pygame.Rect((width-size, 0), (size, height))) # right bound
         return bounds
 
+
 if __name__ == "__main__":
     import sys
     pygame.init()
