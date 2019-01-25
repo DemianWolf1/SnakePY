@@ -11,7 +11,7 @@ pygame.display.set_caption("SnakePY 1.0dev0")
 CELL_SIZE = 32
 COL_COUNT = W // CELL_SIZE
 ROW_COUNT = H // CELL_SIZE
-startimage = "data/images/snake/orange.png"
+startimage = "data/images/snake/white.png"
 
 
 class Snake:
