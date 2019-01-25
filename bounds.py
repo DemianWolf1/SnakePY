@@ -1,7 +1,7 @@
 import pygame
 
 
-class Borders:
+class Bounds:
     def createlist(self, width=640, height=480, size=10):
         """ in - (self)
 Creates a list of borderss Rect objects.
@@ -23,6 +23,6 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit(0)
         scr.fill((0,0,0))
-        for i in Borders().createlist(width=640, height=480, size=10):
+        for i in Bounds().createlist(width=640, height=480, size=10):
             pygame.draw.rect(scr, (100, 100, 255), i)
         pygame.display.flip()
