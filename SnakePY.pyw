@@ -1,6 +1,5 @@
 import pygame
 import random
-import os
 from pygame.locals import * 
 pygame.init()
 W, H = 480, 320
@@ -45,6 +44,8 @@ class Apple:
 
 
 snake = Snake(startimage)
+pygame.mixer.music.load("data/sound/start.wav")
+pygame.mixer.music.play()
 pygame.time.set_timer(31, 100) # задаём таймер на движение (ID=31, ms=100)
 while True:
     for event in pygame.event.get():
@@ -56,5 +57,4 @@ while True:
             snake.move()
     screen.fill((0, 0, 0))
     snake.draw()
-    pygame.time.wait(100)
     pygame.display.flip()
