@@ -14,23 +14,31 @@ ROW_COUNT = H // CELL_SIZE
 startimage = "data/images/snake/white.png"
 
 
-class Snake:
+class Snake: # Snake Object Class
     def __init__(self, img):
         self.image = pygame.image.load(img)
         self.body = [[COL_COUNT // 2, ROW_COUNT // 2],
                      [COL_COUNT // 2, ROW_COUNT // 2 + 1],
                      [COL_COUNT // 2, ROW_COUNT // 2 + 2]]
         self.direction = [0, -1]
+        self.oldkey = K_UP
 
     def set_direction(self, key):
-        if key == pygame.K_LEFT:
-            self.direction = [-1, 0]
-        elif key == pygame.K_RIGHT:
-            self.direction = [1, 0]
-        elif key == pygame.K_UP:
-            self.direction = [0, -1]
-        elif key == pygame.K_DOWN:
-            self.direction = [0, 1]
+        opposite = {K_LEFT: K_RIGHT, K_RIGHT: K_LEFT, K_UP: K_DOWN, K_DOWN: K_UP}
+        if opposite[self.oldkey] != key: 
+            if key == pygame.K_LEFT:
+                self.direction = [-1, 0]
+                self.oldkey = K_LEFT
+            elif key == pygame.K_RIGHT:
+                self.direction = [1, 0]
+                self.oldkey = K_RIGHT
+            elif key == pygame.K_UP:
+                self.direction = [0, -1]
+                self.oldkey = K_UP
+            elif key == pygame.K_DOWN:
+                self.direction = [0, 1]
+                self.oldkey = K_DOWN
+
 
     def move(self):
         self.body.insert(0, [self.body[0][0] + self.direction[0], self.body[0][1] + self.direction[1]])
@@ -57,7 +65,7 @@ class Apple:
 snake = Snake(startimage)
 pygame.mixer.music.load("data/sound/start.wav")
 pygame.mixer.music.play()
-pygame.time.set_timer(31, 100) # задаём таймер на движение (ID=31, ms=100)
+clock = pygame.time.Clock()
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -65,8 +73,8 @@ while True:
             sys.exit(0)
         elif event.type == KEYDOWN:
             snake.set_direction(event.key)
-        elif event.type == 31: # обрабатываем таймер на движение
-            snake.move()
+    snake.move()
+    clock.tick(10)
     screen.fill((0, 0, 0))
     snake.draw()
     pygame.display.flip()
