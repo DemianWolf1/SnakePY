@@ -53,16 +53,19 @@ class Snake: # Snake Object Class
             screen.blit(self.image, (elem[0] * CELL_SIZE, elem[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
 
-class Apple:
+class Apple: # Apple Class Object
 
-    def __init__(self):
-        pass
+    def __init__(self, size):
+        self.x = random.randrange(COL_COUNT) * CELL_SIZE
+        self.y = random.randrange(ROW_COUNT) * CELL_SIZE
+        self.size = size
 
     def draw(self):
-        pass
+        pygame.draw.rect(screen, (250, 50, 50), (self.x, self.y, CELL_SIZE, CELL_SIZE))
 
 
 snake = Snake(startimage)
+apple = Apple(1)
 pygame.mixer.music.load("data/sound/start.wav")
 pygame.mixer.music.play()
 clock = pygame.time.Clock()
@@ -73,6 +76,7 @@ while True:
             sys.exit(0)
         elif event.type == KEYDOWN:
             snake.set_direction(event.key)
+    apple.draw()
     snake.move()
     clock.tick(10)
     screen.fill((0, 0, 0))
