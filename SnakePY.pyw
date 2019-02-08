@@ -13,6 +13,9 @@ COL_COUNT = W // CELL_SIZE
 ROW_COUNT = H // CELL_SIZE
 startimage = "data/images/snake/white.png"
 
+def play_sound(fname):
+    pygame.mixer.music.load(fname)
+    pygame.mixer.music.play()
 
 class Snake: # Snake Object Class
     def __init__(self, img):
@@ -50,7 +53,7 @@ class Snake: # Snake Object Class
         screen.fill((0, 0, 0))
         self.score += 1
         self.body.append([COL_COUNT // 2, ROW_COUNT // 2 + 2 + self.score])
-        print(len(self.body))
+        play_sound("data/sound/ate.wav")
 
     def draw(self):
         for elem in self.body:
@@ -70,8 +73,7 @@ class Apple: # Apple Class Object
 
 snake = Snake(startimage)
 apple = Apple()
-pygame.mixer.music.load("data/sound/start.wav")
-pygame.mixer.music.play()
+play_sound("data/sound/start.wav")
 clock = pygame.time.Clock()
 while True:
     for event in pygame.event.get():
