@@ -6,7 +6,7 @@ from pygame.locals import *
 
 pygame.init()
 W, H = 480, 320
-screen = pygame.display.set_mode((W, H))
+screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
 pygame.display.set_caption("SnakePY 1.0dev1")
 CELL_SIZE = 8
 COL_COUNT = W // CELL_SIZE
@@ -42,6 +42,10 @@ class Snake: # Snake Object Class
             elif key == pygame.K_DOWN:
                 self.direction = [0, 1]
                 self.oldkey = K_DOWN
+        elif self.oldkey == key:
+            self.direction = map(lambda el: el * 2, self.direction)
+        else:
+            self.direction = map(lambda el: el / 2, self.direction)
 
 
     def move(self):
@@ -63,12 +67,15 @@ class Snake: # Snake Object Class
 class Apple: # Apple Class Object
 
     def __init__(self, size=1):
-        self.x = random.randrange(COL_COUNT) * CELL_SIZE
-        self.y = random.randrange(ROW_COUNT) * CELL_SIZE
+        self.set_coords()
         self.size = size  # Зачем?
 
     def draw(self):
         pygame.draw.rect(screen, (250, 50, 50), (self.x, self.y, CELL_SIZE, CELL_SIZE))
+
+    def set_coords(self):
+        self.x = random.randrange(COL_COUNT) * CELL_SIZE
+        self.y = random.randrange(ROW_COUNT) * CELL_SIZE
 
 
 snake = Snake(startimage)
@@ -81,7 +88,11 @@ while True:
             pygame.quit()
             sys.exit(0)
         elif event.type == KEYDOWN:
-            snake.set_direction(event.key)
+            if event.key == K_ESCAPE:
+                pygame.quit()
+                sys.exit(0)
+            else:
+                snake.set_direction(event.key)
     snake.move()
     clock.tick(10)
     screen.fill((0, 0, 0))
@@ -90,7 +101,7 @@ while True:
     for elem in snake.body:
         if pygame.Rect(apple.x, apple.y, CELL_SIZE, CELL_SIZE).colliderect((elem[0] * CELL_SIZE, elem[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE)):
             snake.eat()
-            apple = Apple()
+            apple.set_coords()
             break
     screen.blit(pygame.font.SysFont('Comic Sans MS', 30).render(f'{snake.score}', False, (255, 0, 0)), (W - 35, 0))
     pygame.display.flip()
