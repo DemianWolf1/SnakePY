@@ -8,7 +8,7 @@ pygame.init()
 W, H = 480, 320
 screen = pygame.display.set_mode((W, H))
 pygame.display.set_caption("SnakePY 1.0dev1")
-CELL_SIZE = 32
+CELL_SIZE = 8
 COL_COUNT = W // CELL_SIZE
 ROW_COUNT = H // CELL_SIZE
 startimage = "data/images/snake/white.png"
