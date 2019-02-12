@@ -7,7 +7,7 @@ from pygame.locals import *
 pygame.init()
 W, H = 480, 320
 screen = pygame.display.set_mode((W, H), pygame.FULLSCREEN)
-pygame.display.set_caption("SnakePY 1.0dev1")
+pygame.display.set_caption("SnakePY 1.0dev2")
 CELL_SIZE = 8
 COL_COUNT = W // CELL_SIZE
 ROW_COUNT = H // CELL_SIZE
@@ -25,29 +25,21 @@ class Snake: # Snake Object Class
                      [COL_COUNT // 2, ROW_COUNT // 2 + 2]]
         self.direction = [0, -1]
         self.oldkey = K_UP
+        self.vel = 10
         self.score = 0
 
     def set_direction(self, key):
         opposite = {K_LEFT: K_RIGHT, K_RIGHT: K_LEFT, K_UP: K_DOWN, K_DOWN: K_UP}
-        if opposite[self.oldkey] != key: 
-            if key == pygame.K_LEFT:
-                self.direction = [-1, 0]
-                self.oldkey = K_LEFT
-            elif key == pygame.K_RIGHT:
-                self.direction = [1, 0]
-                self.oldkey = K_RIGHT
-            elif key == pygame.K_UP:
-                self.direction = [0, -1]
-                self.oldkey = K_UP
-            elif key == pygame.K_DOWN:
-                self.direction = [0, 1]
-                self.oldkey = K_DOWN
-        elif self.oldkey == key:
-            self.direction = map(lambda el: el * 2, self.direction)
+        if self.oldkey == key: self.vel += 5
+        elif opposite[self.oldkey] == key:
+            if self.vel > 5: self.vel -= 5
         else:
-            self.direction = map(lambda el: el / 2, self.direction)
-
-
+            if key == K_LEFT: self.direction = [-1, 0]
+            elif key == K_RIGHT: self.direction = [1, 0]
+            elif key == K_UP: self.direction = [0, -1]
+            elif key == K_DOWN: self.direction = [0, 1]
+            self.oldkey = key
+        print(self.vel)
     def move(self):
         self.body.insert(0, [self.body[0][0] + self.direction[0], self.body[0][1] + self.direction[1]])
         self.body.pop() # убираем хвост
@@ -94,7 +86,7 @@ while True:
             else:
                 snake.set_direction(event.key)
     snake.move()
-    clock.tick(10)
+    clock.tick(snake.vel)
     screen.fill((0, 0, 0))
     snake.draw()
     apple.draw()
