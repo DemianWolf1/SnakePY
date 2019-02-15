@@ -39,7 +39,7 @@ class Snake: # Snake Object Class
             elif key == K_UP: self.direction = [0, -1]
             elif key == K_DOWN: self.direction = [0, 1]
             self.oldkey = key
-        print(self.vel)
+
     def move(self):
         self.body.insert(0, [self.body[0][0] + self.direction[0], self.body[0][1] + self.direction[1]])
         self.body.pop() # убираем хвост
@@ -55,6 +55,12 @@ class Snake: # Snake Object Class
         for elem in self.body:
             screen.blit(self.image, (elem[0] * CELL_SIZE, elem[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
+    def quit_game(self):
+        records_out = open("records.ini", "w")
+        records_out.write(str(self.score))
+        records_out.close()
+        pygame.quit()
+        sys.exit(0)
 
 class Apple: # Apple Class Object
 
@@ -77,12 +83,10 @@ clock = pygame.time.Clock()
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
-            pygame.quit()
-            sys.exit(0)
+            snake.quit_game()
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
-                pygame.quit()
-                sys.exit(0)
+                snake.quit_game()
             else:
                 snake.set_direction(event.key)
     snake.move()
