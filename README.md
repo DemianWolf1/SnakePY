@@ -1,2 +1,2 @@
 # SnakePY
-SnakePY is Snake Game using Python
+SnakePY is a simple Snake Game using Python
